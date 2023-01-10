@@ -1,0 +1,33 @@
+{
+    "name": "node-nodejs-crud-api",
+    "version": "1.0.0",
+    "description": "This repository is the part of task of nodejs-assignments https://github.com/AlreadyBored/nodejs-assignments",
+    "scripts": {
+        "start:dev": "nodemon --watch './**/*.ts' --exec ts-node --esm src/server.ts",
+        "start:prod": "webpack && ts-node dist/bundle.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Nevmerzhitskaya/nodejs-task4.git"
+    },
+    "author": "Nevmerzhitskaya",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Nevmerzhitskaya/nodejs-task4/issues"
+    },
+    "homepage": "https://github.com/Nevmerzhitskaya/nodejs-task4#readme",
+    "devDependencies": {
+        "@types/node": "^18.11.18",
+        "eslint": "^8.31.0",
+        "nodemon": "^2.0.20",
+        "ts-loader": "^9.4.2",
+        "ts-node": "^10.9.1",
+        "typescript": "^4.9.4",
+        "webpack": "^5.75.0",
+        "webpack-cli": "^5.0.1",
+        "webpack-node-externals": "^3.0.0"
+    },
+    "dependencies": {
+        "dotenv": "^16.0.3"
+    }
+}

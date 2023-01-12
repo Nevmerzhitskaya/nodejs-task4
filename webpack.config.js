@@ -16,7 +16,7 @@ module.exports = {
         extensions: ['.tsx', '.ts', '.js'],
     },
     entry: {
-        main: path.resolve(__dirname, './src/server.ts'),
+        main: path.resolve(__dirname, './src/index.ts'),
     },
     output: {
         clean: true,

@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "This repository is the part of task of nodejs-assignments https://github.com/AlreadyBored/nodejs-assignments",
     "scripts": {
-        "start:dev": "nodemon --watch './**/*.ts' --exec ts-node --esm src/server.ts",
+        "start:dev": "nodemon --watch './**/*.ts' --exec ts-node --esm src/index.ts",
         "start:prod": "webpack && ts-node dist/bundle.js"
     },
     "repository": {
@@ -28,6 +28,7 @@
         "webpack-node-externals": "^3.0.0"
     },
     "dependencies": {
-        "dotenv": "^16.0.3"
+        "dotenv": "^16.0.3",
+        "uuid": "^9.0.0"
     }
 }

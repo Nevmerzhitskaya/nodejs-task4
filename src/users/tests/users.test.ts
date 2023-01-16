@@ -22,7 +22,7 @@ describe('Scenario 2 - A new user is created', () => {
         testUser.username = undefined;            
         const response = await request(server).post(path).send(testUser);
         expect(response.statusCode).toBe(StatusCode.BAD_REQUEST);
-        expect(response.text).toEqual(ErrorMessage.ERROR_VALIDATION);
+        expect(response.body).toEqual({"code":StatusCode.BAD_REQUEST,"message": ErrorMessage.ERROR_VALIDATION});
         testUser.username = 'Victor';
     })
 
@@ -30,7 +30,7 @@ describe('Scenario 2 - A new user is created', () => {
         testUser.username = '';            
         const response = await request(server).post(path).send(testUser);
         expect(response.statusCode).toBe(StatusCode.BAD_REQUEST);
-        expect(response.text).toEqual(ErrorMessage.ERROR_VALIDATION);
+        expect(response.body).toEqual({"code":StatusCode.BAD_REQUEST,"message": ErrorMessage.ERROR_VALIDATION});
         testUser.username = 'Victor';
     })
 
@@ -38,7 +38,7 @@ describe('Scenario 2 - A new user is created', () => {
         testUser.age = undefined;
         const response = await request(server).post(path).send(JSON.stringify(testUser));
         expect(response.statusCode).toBe(StatusCode.BAD_REQUEST);
-        expect(response.text).toEqual(ErrorMessage.ERROR_VALIDATION);
+        expect(response.body).toEqual({"code":StatusCode.BAD_REQUEST,"message": ErrorMessage.ERROR_VALIDATION});
         testUser.age = 55;
     })
 
@@ -46,7 +46,7 @@ describe('Scenario 2 - A new user is created', () => {
         testUser.hobbies = undefined;
         const response = await request(server).post(path).send(JSON.stringify(testUser));
         expect(response.statusCode).toBe(StatusCode.BAD_REQUEST);
-        expect(response.text).toEqual(ErrorMessage.ERROR_VALIDATION);
+        expect(response.body).toEqual({"code":StatusCode.BAD_REQUEST,"message": ErrorMessage.ERROR_VALIDATION});
         testUser.hobbies = ["dance", "cooking"];
     })    
 
@@ -74,13 +74,13 @@ describe('Scenario 3 - get user by its id', () => {
         const response = await request(server).get(path + '/aa1a6824-b822-40a5-8324-6a6c311bc198');
 
         expect(response.statusCode).toBe(StatusCode.NOT_FOUND);
-        expect(response.text).toEqual(ErrorMessage.USER_NOT_FOUND);
+        expect(response.body).toEqual({"code":StatusCode.NOT_FOUND,"message": ErrorMessage.USER_NOT_FOUND});
     })
 
     it('should return error message that id is invalid', async () => {
         const response = await request(server).get(path + '/aa1a6824-b822-40a5-8324-asdasdas');
 
         expect(response.statusCode).toBe(StatusCode.BAD_REQUEST);
-        expect(response.text).toEqual(ErrorMessage.INVALID_USER_ID);
+        expect(response.body).toEqual({"code":StatusCode.BAD_REQUEST,"message": ErrorMessage.INVALID_USER_ID});
     })
 })

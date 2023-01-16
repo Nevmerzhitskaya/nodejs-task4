@@ -55,7 +55,7 @@ export const requestListener = async function (request: IncomingMessage, respons
       }
 
       response.statusCode = StatusCode.NOT_FOUND;
-      response.end(ErrorMessage.MALFORMED_REQUEST);
+      response.end({"code": response.statusCode, "message": ErrorMessage.MALFORMED_REQUEST});
       break;
     }
     case '/api/users/' + userID: {
@@ -118,21 +118,18 @@ export const requestListener = async function (request: IncomingMessage, respons
         return;
       }
 
-      response.setHeader('Content-Type', 'text/plain');
       response.statusCode = StatusCode.NOT_FOUND;
-      response.end(ErrorMessage.MALFORMED_REQUEST);
+      response.end(JSON.stringify({"code": response.statusCode, "message": ErrorMessage.MALFORMED_REQUEST}));
       break;
     }
     default: {
-      response.setHeader('Content-Type', 'text/plain');
       response.statusCode = StatusCode.NOT_FOUND;
-      response.end(ErrorMessage.MALFORMED_REQUEST);
+      response.end(JSON.stringify({"code": response.statusCode, "message": ErrorMessage.MALFORMED_REQUEST}));
     }
   }
 };
 
 function sendErrorMessage(response: ServerResponse<IncomingMessage>, error?: any) {
-  response.setHeader('Content-Type', 'text/plain');
   response.statusCode = error && error.statusCode ? error.statusCode : StatusCode.SERVER_ERROR;
-  response.end(error && error.message != '' ? error.message : ErrorMessage.INTERNAL_ERROR);
+  response.end(JSON.stringify({"code": response.statusCode, "message": error && error.message != '' ? error.message : ErrorMessage.INTERNAL_ERROR}));
 }

@@ -1,10 +1,9 @@
 
-import { IncomingMessage, ServerResponse } from "http";
-import { ErrorMessage, StatusCode } from "../../src/app/constants";
-import { CustomError } from "../../src/app/exception";
-import { addUser, deleteUser, getAllUsers, getUser, updateUser } from "./users.service";
-import { validate as uuidValidate } from 'uuid';
-import { User } from "./users.model";
+import { IncomingMessage, ServerResponse } from 'http';
+import { ErrorMessage, StatusCode } from '../../src/app/constants';
+import { CustomError } from '../../src/app/exception';
+import { addUser, deleteUser, getAllUsers, getUser, updateUser } from './users.service';
+import { User } from './users.model';
 
 export const requestListener = async function (request: IncomingMessage, response: ServerResponse) {
   response.setHeader('Content-Type', 'application/json');
@@ -35,17 +34,20 @@ export const requestListener = async function (request: IncomingMessage, respons
           const result = Buffer.concat(chunks).toString();
           try {
             let user: User | Record<string, User>;
+            let json;
+
             try {
-              user = await addUser(JSON.parse(result));
-              response.statusCode = StatusCode.CREATED;
-              response.end(JSON.stringify(user));
-            } catch {
+              json = JSON.parse(result);
+            } catch (error) {
               sendErrorMessage(response);
             }
 
-
+            user = await addUser(json);
+            response.statusCode = StatusCode.CREATED;
+            response.end(JSON.stringify(user));
           } catch (error) {
             sendErrorMessage(response, error);
+            return;
           }
         });
 
@@ -85,7 +87,15 @@ export const requestListener = async function (request: IncomingMessage, respons
         request.on('end', async () => {
           const result = Buffer.concat(chunks).toString();
           try {
-            const user = await updateUser(userID, JSON.parse(result));
+            let json;
+
+            try {
+              json = JSON.parse(result);
+            } catch (error) {
+              sendErrorMessage(response);
+            }
+
+            const user = await updateUser(userID, json);
             response.statusCode = StatusCode.OK;
             response.end(JSON.stringify(user));
 
@@ -97,10 +107,10 @@ export const requestListener = async function (request: IncomingMessage, respons
         return;
       }
 
-      if(request.method === 'DELETE') {
+      if (request.method === 'DELETE') {
         try {
           await deleteUser(userID);
-            response.statusCode = StatusCode.NO_CONTENT;
+          response.statusCode = StatusCode.NO_CONTENT;
         } catch (error) {
           sendErrorMessage(response, error);
         }
@@ -108,11 +118,13 @@ export const requestListener = async function (request: IncomingMessage, respons
         return;
       }
 
+      response.setHeader('Content-Type', 'text/plain');
       response.statusCode = StatusCode.NOT_FOUND;
       response.end(ErrorMessage.MALFORMED_REQUEST);
       break;
     }
     default: {
+      response.setHeader('Content-Type', 'text/plain');
       response.statusCode = StatusCode.NOT_FOUND;
       response.end(ErrorMessage.MALFORMED_REQUEST);
     }
@@ -120,6 +132,7 @@ export const requestListener = async function (request: IncomingMessage, respons
 };
 
 function sendErrorMessage(response: ServerResponse<IncomingMessage>, error?: any) {
+  response.setHeader('Content-Type', 'text/plain');
   response.statusCode = error && error.statusCode ? error.statusCode : StatusCode.SERVER_ERROR;
-  response.end(error && error.message ? error.message : ErrorMessage.INTERNAL_ERROR);
+  response.end(error && error.message != '' ? error.message : ErrorMessage.INTERNAL_ERROR);
 }

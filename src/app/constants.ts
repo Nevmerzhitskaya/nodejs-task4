@@ -8,9 +8,9 @@ export const enum StatusCode {
 }
 
 export const enum ErrorMessage {
-    USER_NOT_FOUND = "User not found",
-    ERROR_VALIDATION = "Body does not contain required fields",
-    MALFORMED_REQUEST = "The request was malformed",
-    INTERNAL_ERROR = "Internal server error",
-    INVALID_USER_ID = "User id is invalid"
+    USER_NOT_FOUND = 'User not found',
+    ERROR_VALIDATION = 'Body does not contain required fields',
+    MALFORMED_REQUEST = 'The request was malformed',
+    INTERNAL_ERROR = 'Internal server error',
+    INVALID_USER_ID = 'User id is invalid'
 }

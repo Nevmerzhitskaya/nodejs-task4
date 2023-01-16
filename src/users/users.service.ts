@@ -8,11 +8,12 @@ const instanceDB = new InMemoryDatabase<User>();
 const badRequest = new CustomError(StatusCode.BAD_REQUEST, ErrorMessage.ERROR_VALIDATION);
 
 export const addUser = async (obj: User) => {
+    
+    if (!(obj?.age && typeof obj.age === 'number')) throw badRequest;
+    if (!(obj?.username && obj.username != '' && typeof obj.username === 'string')) throw badRequest;
+    if (!(obj?.hobbies)) throw badRequest;
+    
     obj.id = uuidv4();
-    if (!(obj.age && typeof obj.age === 'number')) throw badRequest;
-    if (!(obj.username && typeof obj.username === 'string')) throw badRequest;
-    if (!(obj.hobbies)) throw badRequest;
-
 
     instanceDB.set(obj);
 
@@ -27,9 +28,9 @@ export const updateUser = async (id: string, obj: User) => {
     obj.id = id;
 
     if(!user) throw new CustomError(StatusCode.NOT_FOUND, ErrorMessage.USER_NOT_FOUND);
-    if (!(obj.age && typeof obj.age === 'number')) throw badRequest;
-    if (!(obj.username && typeof obj.username === 'string')) throw badRequest;
-    if (!(obj.hobbies)) throw badRequest;
+    if (!(obj?.age && obj.age != null && typeof obj.age === 'number')) throw badRequest;
+    if (!(obj?.username && obj.username != '' && typeof obj.username === 'string')) throw badRequest;
+    if (!(obj?.hobbies)) throw badRequest;
 
     instanceDB.set(obj);
 

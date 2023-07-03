@@ -111,6 +111,7 @@ export const requestListener = async function (request: IncomingMessage, respons
         try {
           await deleteUser(userID);
           response.statusCode = StatusCode.NO_CONTENT;
+          response.end(JSON.stringify({"code": response.statusCode}));
         } catch (error) {
           sendErrorMessage(response, error);
         }

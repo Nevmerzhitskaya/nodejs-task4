@@ -5,6 +5,7 @@
     "scripts": {
         "start:dev": "nodemon --watch './**/*.ts' --exec ts-node --esm src/index.ts",
         "start:prod": "webpack && ts-node dist/bundle.js",
+        "start:multi": "nodemon --watch './**/*.ts' --exec ts-node --esm src/index.ts --cluster=true",
         "test": "jest --watch --config ./jest.config.js",
         "test:watch": "jest --watch"
     },
